@@ -10,8 +10,8 @@ function TimeControls({ values, handleBlur, handleChange, handleSubmit, errors, 
                 Time Controls
             </span>
             <div className='flex flex-col items-center justify-center m-5 w-full'>
-                <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center'>
-                    <div className='flex flex-row items-center justify-center'>
+                <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center w-full'>
+                    <div className='flex flex-row items-center justify-center w-4/5'>
                         <label className='relative w-full px-5 py-2'>
                             <span className='text-copy text-sm text-opacity-80'>
                                 Hours
@@ -41,7 +41,7 @@ function TimeControls({ values, handleBlur, handleChange, handleSubmit, errors, 
                             {errors.minutes && <span className='text-error-content'>{errors.minutes}</span>}
                         </label>
                     </div>
-                    <div className='flex flex-row items-center justify-center'>
+                    <div className='flex flex-row items-center justify-center w-4/5'>
                         <label className='relative w-full px-5 py-2'>
                             <span className='text-copy text-sm text-opacity-80'>
                                 Seconds
