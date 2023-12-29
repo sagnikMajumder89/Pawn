@@ -22,3 +22,9 @@ input[type="password"]:focus ~ .input-text {
 input[type="password"] ~ .has-value {
   @apply text-copy transform -translate-y-9 -translate-x-5 scale-90;
 }
+input[type="number"]:focus ~ .input-text {
+  @apply text-copy transform -translate-y-9 -translate-x-5 scale-90;
+}
+input[type="number"] ~ .has-value {
+  @apply text-copy transform -translate-y-9 -translate-x-5 scale-90;
+}

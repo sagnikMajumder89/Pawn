@@ -192,7 +192,7 @@ export default function MiniDrawer() {
                     <div className="text-2xl font-bold text-copy">PawnHub.com</div>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open} sx={{ backgroundColor: "#202d29" }}>
+            <Drawer variant="permanent" open={open} sx={{ backgroundColor: "#202d29" }} >
                 <DrawerHeader >
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
