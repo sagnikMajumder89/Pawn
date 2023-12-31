@@ -100,12 +100,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const items1 = [
     {
-        text: 'Play Classic',
+        text: 'Play',
         icon: <TimerIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Play Blitz',
-        icon: <SpeedIcon sx={{ color: 'white' }} />,
     },
     {
         text: 'Play with Friends',
@@ -138,20 +134,12 @@ const items2 = [
         icon: <InfoIcon sx={{ color: 'white' }} />,
     },
     {
-        text: 'Terms and Conditions',
+        text: 'T & C',
         icon: <GavelIcon sx={{ color: 'white' }} />,
     },
     {
         text: 'Privacy Policy',
         icon: <PrivacyTipIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'FAQs',
-        icon: <HelpOutlineIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Report a Bug',
-        icon: <BugReportIcon sx={{ color: 'white' }} />,
     },
     {
         text: 'Feedback',

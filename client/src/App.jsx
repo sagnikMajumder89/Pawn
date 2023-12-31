@@ -8,6 +8,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from "./utils/Theme";
 import Play from "./components/Play/Play";
 import Gameboard from "./components/Play/Gameboard";
+import AuthRoute from "./components/Authentication/AuthRoute";
+import ReAuthRoute from "./components/Authentication/ReAuthPrevent";
 export default function App() {
   return (
     <>
@@ -16,11 +18,31 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/play" element={<Play />} />
-              <Route path="/play/:id" element={<Gameboard />} />
+              <Route path="/login" element={
+                <ReAuthRoute>
+                  <Login />
+                </ReAuthRoute>
+              } />
+              <Route path="/signup" element={
+                <ReAuthRoute>
+                  <Signup />
+                </ReAuthRoute>
+              } />
+              <Route path="/home" element={
+                <AuthRoute>
+                  <Home />
+                </AuthRoute>
+              } />
+              <Route path="/play" element={
+                <AuthRoute>
+                  <Play />
+                </AuthRoute>
+              } />
+              <Route path="/play/:id" element={
+                <AuthRoute>
+                  <Gameboard />
+                </AuthRoute>
+              } />
               {/* <Route path="/about" element={<About />} /> */}
             </Routes>
           </BrowserRouter>

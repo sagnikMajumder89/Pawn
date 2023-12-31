@@ -28,3 +28,16 @@ input[type="number"]:focus ~ .input-text {
 input[type="number"] ~ .has-value {
   @apply text-copy transform -translate-y-9 -translate-x-5 scale-90;
 }
+
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 181, 172, 0.6);
+  border-radius: 100vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 181, 172, 0.4);
+}

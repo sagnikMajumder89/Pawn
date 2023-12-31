@@ -33,7 +33,7 @@ const cardItems = {
 
 }
 
-function Home() {
+function Home(props) {
     const navigator = useNavigate();
     const handleClick = (link) => {
         navigator(link);
@@ -44,13 +44,13 @@ function Home() {
         <div className='bg-background w-full h-full flex flex-row'>
             <MiniDrawer />
             <div className="flex flex-col items-start justify-start w-full px-20 py-28 gap-2">
-                <span className="text-3xl font-semibold">Welcome Sagnik !</span>
+                <span className="text-3xl font-semibold">{`Welcome ${props.userDetails.username}`}</span>
                 <span className="text-xl font-light">Get going with your games</span>
                 <div className="grid grid-cols-4">
                     {Object.keys(cardItems).map((key) => {
                         return (
-                            <div onClick={() => handleClick(cardItems[key].link)}>
-                                <Cards key={key} title={cardItems[key].title} subtitle={cardItems[key].subtitle} image={cardItems[key].image} />
+                            <div key={key} onClick={() => handleClick(cardItems[key].link)}>
+                                <Cards title={cardItems[key].title} subtitle={cardItems[key].subtitle} image={cardItems[key].image} />
                             </div>
                         )
                     })}

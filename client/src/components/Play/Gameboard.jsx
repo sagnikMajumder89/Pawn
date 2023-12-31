@@ -8,6 +8,7 @@ import { Chess } from 'chess.js'
 
 function Gameboard() {
     const [game, setGame] = useState(new Chess());
+    console.log(game)
     const [promotion, setPromotion] = useState({ show: false, square: null });
     console.log(game)
     // const game = new Chess();
@@ -47,7 +48,7 @@ function Gameboard() {
 
             </div>
             <div className='flex flex-col items-center justify-center w-1/2 p-5'>
-                <Chessboard position={game.fen()} showPromotionDialog={false} onPieceDrop={onDrop} />
+                <Chessboard position={game.fen()} showPromotionDialog={false} onPieceDrop={onDrop} promotionDialogVariant='vertical' />
             </div>
             <div className='flex flex-col items-center justify-center w-1/4'>
                 <div className='flex flex-col items-center justify-start'>
