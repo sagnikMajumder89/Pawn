@@ -16,7 +16,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
-import SpeedIcon from '@mui/icons-material/Speed';
 import PeopleIcon from '@mui/icons-material/People';
 import TournamentIcon from '@mui/icons-material/EmojiEvents';
 import AndroidIcon from '@mui/icons-material/Android';
@@ -27,9 +26,9 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import InfoIcon from '@mui/icons-material/Info';
 import GavelIcon from '@mui/icons-material/Gavel';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import BugReportIcon from '@mui/icons-material/BugReport';
 import FeedbackIcon from '@mui/icons-material/Feedback';
+import ProfileMenu from './ProfileMenu';
+import MessagesMenu from './MessagesMenu';
 
 const drawerWidth = 250;
 
@@ -177,7 +176,13 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon sx={{ color: 'white' }} />
                     </IconButton>
-                    <div className="text-2xl font-bold text-copy">PawnHub.com</div>
+                    <div className='flex w-full h-full justify-between items-center'>
+                        <div className="text-2xl font-bold text-copy">PawnHub.com</div>
+                        <div className='flex flex-row'>
+                            <MessagesMenu />
+                            <ProfileMenu />
+                        </div>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open} sx={{ backgroundColor: "#202d29" }} >
@@ -186,8 +191,6 @@ export default function MiniDrawer() {
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </DrawerHeader>
-
-
                 <Divider />
                 <List >
                     {items1.map((item, index) => (

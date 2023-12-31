@@ -33,8 +33,12 @@ input[type="number"] ~ .has-value {
   width: 0.5em;
 }
 
+::-webkit-scrollbar-track {
+  background: #202d29;
+}
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(150, 181, 172, 0.6);
+  background: rgba(150, 181, 172, 0.8);
   border-radius: 100vw;
 }
 

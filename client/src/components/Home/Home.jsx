@@ -44,7 +44,7 @@ function Home(props) {
         <div className='bg-background w-full h-full flex flex-row'>
             <MiniDrawer />
             <div className="flex flex-col items-start justify-start w-full px-20 py-28 gap-2">
-                <span className="text-3xl font-semibold">{`Welcome ${props.userDetails.username}`}</span>
+                <span className="text-3xl font-semibold">{`Welcome ${props.userDetails.username} !`}</span>
                 <span className="text-xl font-light">Get going with your games</span>
                 <div className="grid grid-cols-4">
                     {Object.keys(cardItems).map((key) => {
