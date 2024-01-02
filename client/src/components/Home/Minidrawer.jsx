@@ -16,7 +16,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/People';
 import TournamentIcon from '@mui/icons-material/EmojiEvents';
 import AndroidIcon from '@mui/icons-material/Android';
 import SchoolIcon from '@mui/icons-material/School';
@@ -29,6 +28,9 @@ import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import ProfileMenu from './ProfileMenu';
 import MessagesMenu from './MessagesMenu';
+import FriendsDialog from './FriendsDialogBox';
+import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 250;
 
@@ -99,50 +101,61 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const items1 = [
     {
-        text: 'Play',
-        icon: <TimerIcon sx={{ color: 'white' }} />,
+        text: 'Home',
+        icon: <HomeIcon sx={{ color: 'white' }} />,
+        link: '/home'
     },
     {
-        text: 'Play with Friends',
-        icon: <PeopleIcon sx={{ color: 'white' }} />,
+        text: 'Play',
+        icon: <TimerIcon sx={{ color: 'white' }} />,
+        link: '/play'
     },
     {
         text: 'Tournaments',
         icon: <TournamentIcon sx={{ color: 'white' }} />,
+        link: '/tournaments'
     },
     {
         text: 'Practice with Bots',
         icon: <AndroidIcon sx={{ color: 'white' }} />,
+        link: '/playwb'
     },
     {
         text: 'Learn from the Masters',
         icon: <SchoolIcon sx={{ color: 'white' }} />,
+        link: '/learn'
     },
     {
         text: 'Watch Live Games',
         icon: <VisibilityIcon sx={{ color: 'white' }} />,
+        link: '/watch'
     }
 ];
 const items2 = [
     {
         text: 'Contact Us',
         icon: <ContactMailIcon sx={{ color: 'white' }} />,
+        link: '/contact'
     },
     {
         text: 'About Us',
         icon: <InfoIcon sx={{ color: 'white' }} />,
+        link: '/about'
     },
     {
         text: 'T & C',
         icon: <GavelIcon sx={{ color: 'white' }} />,
+        link: '/terms'
     },
     {
         text: 'Privacy Policy',
         icon: <PrivacyTipIcon sx={{ color: 'white' }} />,
+        link: '/privacy'
     },
     {
         text: 'Feedback',
         icon: <FeedbackIcon sx={{ color: 'white' }} />,
+        link: '/feedback'
     }
 ];
 
@@ -150,6 +163,7 @@ const items2 = [
 //widget
 export default function MiniDrawer() {
     const theme = useTheme();
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -163,7 +177,7 @@ export default function MiniDrawer() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} elevation={0}>
+            <AppBar position="fixed" open={open} elevation={2}>
                 <Toolbar className='bg-background'>
                     <IconButton
                         aria-label="open drawer"
@@ -179,6 +193,7 @@ export default function MiniDrawer() {
                     <div className='flex w-full h-full justify-between items-center'>
                         <div className="text-2xl font-bold text-copy">PawnHub.com</div>
                         <div className='flex flex-row'>
+                            <FriendsDialog />
                             <MessagesMenu />
                             <ProfileMenu />
                         </div>
@@ -196,6 +211,7 @@ export default function MiniDrawer() {
                     {items1.map((item, index) => (
                         <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
+                                onClick={() => navigate(item.link)}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
@@ -225,6 +241,7 @@ export default function MiniDrawer() {
                     {items2.map((item, index) => (
                         <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
+                                onClick={() => navigate(item.link)}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',

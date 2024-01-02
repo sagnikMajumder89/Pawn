@@ -20,6 +20,10 @@ const userSchema = new Schema({
     required: true,
     minlength: 6,
   },
+  profilePicture: {
+    type: String,
+    default: "https://cdn-icons-png.flaticon.com/512/3682/3682281.png",
+  },
   rating: {
     type: Number,
     default: 1000,
@@ -68,6 +72,15 @@ const userSchema = new Schema({
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    default: [],
+  },
+  notifications: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Notification",
       },
     ],
     default: [],

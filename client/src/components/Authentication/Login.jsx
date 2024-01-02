@@ -3,6 +3,8 @@ import { signInSchema } from '../../schemas';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import { useState } from 'react';
+import CustomizedSnackbars from '../Snackbar/Snackbar';
 
 const inittialValues = {
     username: '',
@@ -10,15 +12,30 @@ const inittialValues = {
 }
 
 function Login() {
+
+    const [openSnackbar, setOpenSnackbar] = useState({ open: false, type: '', message: '' });
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar({ open: false, type: '', message: '' });
+    };
+
     const navigate = useNavigate()
-    const handleLogin = ({ username, password }) => {
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/users/login`, { username, password }, { withCredentials: true })
-            .then(res => {
+    const handleLogin = async ({ username, password }) => {
+        setOpenSnackbar({ open: false, type: '', message: '' })
+        try {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/users/login`, { username, password }, { withCredentials: true })
+            setOpenSnackbar({ open: true, type: 'success', message: 'Logged in successfully, redirecting...' })
+            setTimeout(() => {
                 navigate('/home')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+            }, 1500);
+
+        } catch (err) {
+            console.log(err.response.data.message)
+            setOpenSnackbar({ open: true, type: 'error', message: err.response.data.message })
+        }
     }
 
     const { values, handleBlur, touched, handleChange, handleSubmit, errors } = useFormik({
@@ -125,7 +142,7 @@ function Login() {
                     <button onClick={() => navigate('/signup')} className='bg-copy rounded-full min-w-40 mt-6 px-3 py-3 font-semibold shadow-2xl'>Sign Up</button>
                 </div>
                 <div className='bg-background w-1/12'>
-
+                    {openSnackbar && <CustomizedSnackbars type={openSnackbar.type} message={openSnackbar.message} open={openSnackbar.open} handleClose={handleCloseSnackbar} />}
                 </div>
             </div >
         </>

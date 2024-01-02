@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         display: ["Noto Sans", "sans-serif"],
+        quote: ["Pacifico", "sans-serif"],
       },
       colors: {
         primary: "#05523b",

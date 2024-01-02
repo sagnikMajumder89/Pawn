@@ -2,10 +2,6 @@ import React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
-import { FaCartShopping, FaUser } from "react-icons/fa6";
-import { IoHelp } from "react-icons/io5";
-import { RiLogoutBoxLine } from "react-icons/ri";
-import { IoMdSettings } from "react-icons/io";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
 
 export default function MessagesMenu() {
@@ -28,7 +24,7 @@ export default function MessagesMenu() {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <div className='bg-copy-lighter rounded-full h-8 w-8 flex items-center justify-center bg-opacity-50'>
+                <div className='rounded-full h-8 w-8 flex items-center justify-center bg-opacity-50'>
                     <IoNotificationsCircleOutline style={{ color: 'white' }} size={35} />
                 </div>
             </IconButton>
@@ -41,9 +37,7 @@ export default function MessagesMenu() {
                 onClose={handleClose}
             >
                 <MenuItem onClick={() => handleClose('Random')}>
-
                     No new notifications / messages
-
                 </MenuItem>
 
 

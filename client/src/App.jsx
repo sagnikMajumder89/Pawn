@@ -10,6 +10,9 @@ import Play from "./components/Play/Play";
 import Gameboard from "./components/Play/Gameboard";
 import AuthRoute from "./components/Authentication/AuthRoute";
 import ReAuthRoute from "./components/Authentication/ReAuthPrevent";
+import AddFriend from "./components/Home/AddFriend";
+import ProfilePage from "./components/UserProfile/ProfilePage";
+import ContactUs from "./components/DevPages/ContactUs";
 export default function App() {
   return (
     <>
@@ -41,6 +44,21 @@ export default function App() {
               <Route path="/play/:id" element={
                 <AuthRoute>
                   <Gameboard />
+                </AuthRoute>
+              } />
+              <Route path="/addFriend" element={
+                <AuthRoute>
+                  <AddFriend />
+                </AuthRoute>
+              } />
+              <Route path="/profile/:id" element={
+                <AuthRoute>
+                  <ProfilePage />
+                </AuthRoute>
+              } />
+              <Route path="/contact" element={
+                <AuthRoute>
+                  <ContactUs />
                 </AuthRoute>
               } />
               {/* <Route path="/about" element={<About />} /> */}

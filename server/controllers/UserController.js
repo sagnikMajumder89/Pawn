@@ -13,6 +13,27 @@ const getUserDetails = asyncHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
+//------------------Get User Details By Id------------------//
+const getUserDetailsById = asyncHandler(async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId)
+      .select("-password")
+      .select("-email")
+      .select("-friendRequestsSent")
+      .select("-friendRequestsReceived")
+      .select("-notifications");
+    if (!user) {
+      res.status(400);
+      throw new Error("User does not exist");
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
+});
+
 //------------------Login------------------//
 const login = asyncHandler(async (req, res) => {
   try {
@@ -128,6 +149,7 @@ const logout = asyncHandler(async (req, res) => {
       httpOnly: true,
       expires: new Date(0),
       sameSite: "none",
+      secure: true,
     });
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
@@ -216,22 +238,18 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
 //------------------Remove friend request------------------//
 const removeFriendRequest = asyncHandler(async (req, res) => {
   try {
-    const { id } = req.body;
-    console.log(id);
+    const { friendId } = req.body;
     const userId = req.user._id;
-    console.log(userId);
-    const friendReq = await User.findById(id);
-    console.log(friendReq);
+    const friendReq = await User.findById(friendId);
     const user = await User.findById(userId);
-    console.log(user);
     if (!friendReq) {
       res.status(400);
       throw new Error("User does not exist");
     }
 
-    if (user.friendRequestsReceived.includes(id)) {
+    if (user.friendRequestsReceived.includes(friendId)) {
       user.friendRequestsReceived = user.friendRequestsReceived.filter(
-        (id1) => id1 != id
+        (id1) => id1 != friendId
       );
       friendReq.friendRequestsSent = friendReq.friendRequestsSent.filter(
         (id1) => id1 != String(userId)
@@ -244,6 +262,7 @@ const removeFriendRequest = asyncHandler(async (req, res) => {
       throw new Error("You have not received a friend request from this user");
     }
   } catch (error) {
+    console.log(error);
     throw new Error(error);
   }
 });
@@ -278,6 +297,39 @@ const getFriends = asyncHandler(async (req, res) => {
   }
 });
 
+//------------------Search by username------------------//
+const searchByUsername = asyncHandler(async (req, res) => {
+  try {
+    const { username } = req.body;
+    if (!username) {
+      res.status(400).json({ message: "Username is required" });
+      return;
+    }
+    // Use a regular expression for case-insensitive search
+    const regex = new RegExp(username, "i");
+    let users = await User.find({
+      username: { $regex: regex },
+      _id: { $ne: req.user._id }, // Exclude the current user
+    }).limit(15); // Limit the number of users fetched
+
+    const usersFiltered = users.map((user) => {
+      return {
+        _id: user._id,
+        username: user.username,
+        rating: user.rating,
+        profilePicture: user.profilePicture,
+
+        // Add other fields you want to return
+      };
+    });
+
+    res.json(usersFiltered);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = {
   getUserDetails,
   login,
@@ -289,4 +341,6 @@ module.exports = {
   removeFriendRequest,
   getFriendRequests,
   getFriends,
+  searchByUsername,
+  getUserDetailsById,
 };

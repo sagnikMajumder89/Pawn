@@ -40,7 +40,7 @@ export default function ProfileMenu() {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <div className='bg-copy-lighter rounded-full h-8 w-8 p-1 flex items-center justify-center bg-opacity-50'>
+                <div className='rounded-full h-8 w-8 p-1 flex items-center justify-center bg-opacity-50'>
                     <CgProfile style={{ color: 'white' }} size={35} />
                 </div>
             </IconButton>

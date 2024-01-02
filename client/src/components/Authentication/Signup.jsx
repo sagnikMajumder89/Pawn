@@ -3,6 +3,9 @@ import { signUpSchema } from "../../schemas";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
+import { useState } from "react";
+import Loader from "../../utils/Loader";
+import CustomizedSnackbars from "../Snackbar/Snackbar";
 const inittialValues = {
     username: '',
     email: '',
@@ -10,6 +13,16 @@ const inittialValues = {
 }
 
 function Signup() {
+    const [loading, setLoading] = useState(false)
+    const [openSnackbar, setOpenSnackbar] = useState({ open: false, type: '', message: '' });
+
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar({ open: false, type: '', message: '' });
+    };
     const navigate = useNavigate()
     const { values, handleBlur, handleChange, touched, handleSubmit, errors } = useFormik({
         initialValues: inittialValues,
@@ -29,23 +42,29 @@ function Signup() {
     }
 
     async function handleSubmitClick(values) {
+        setLoading(true)
         try {
             const response = await axios.post('http://localhost:8000/api/v1/users/signup', {
                 username: values.username,
                 email: values.email,
                 password: values.password
             });
-            console.log(response)
             if (response.status === 201) {
                 const responeLogin = await axios.post('http://localhost:8000/api/v1/users/login', {
                     username: values.username,
                     password: values.password
                 }, { withCredentials: true })
-                console.log(responeLogin)
+                if (responeLogin.status === 200) {
+                    setOpenSnackbar({ open: true, type: 'success', message: 'Signup successful, logging you in...' })
+                    setTimeout(() => {
+                        navigate('/home')
+                    }, 1500);
+                }
             }
         } catch (error) {
-            console.log(error)
+            setOpenSnackbar({ open: true, type: 'error', message: error.response.data.message })
         }
+        setLoading(false)
     }
 
     return (
@@ -135,7 +154,13 @@ function Signup() {
                                         </div>
                                     </div>
                                 </label>
-                                <button type='submit' className='bg-primary-light rounded-full w-1/5 px-3 py-3 mt-3 font-semibold text-copy'>Sign Up</button>
+                                {loading ? <div className="w-20">
+                                    <Loader />
+                                </div> :
+                                    <button type='submit' className='bg-primary-light rounded-full w-1/5 px-3 py-3 mt-3 font-semibold text-copy'>
+                                        Sign Up
+                                    </button>
+                                }
                             </div>
                         </form>
 
@@ -150,10 +175,12 @@ function Signup() {
                     <span className='text-copy font-extralight antialiased max-w-prose shadow-2xl'>
                         Sign in to continue
                     </span>
-                    <button onClick={() => navigate('/login')} className='bg-copy rounded-full min-w-40 mt-6 px-3 py-3 font-semibold shadow-2xl'>Sign In</button>
+                    <button onClick={() => navigate('/login')} className='bg-copy rounded-full min-w-40 mt-6 px-3 py-3 font-semibold shadow-2xl'>
+                        Sign In
+                    </button>
                 </div>
                 <div className='bg-background w-1/12'>
-
+                    {openSnackbar && <CustomizedSnackbars type={openSnackbar.type} message={openSnackbar.message} open={openSnackbar.open} handleClose={handleCloseSnackbar} />}
                 </div>
             </div>
         </>

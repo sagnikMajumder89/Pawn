@@ -11,6 +11,7 @@ const userRoutes = require("./routes/UserRoutes");
 const { errorHandler } = require("./middleware/errorHandler");
 const io = new Server(server);
 const cors = require("cors");
+const alluserDelete = require("./utils/devUtils/alluserDelete");
 
 // io.on("connection", (socket) => {
 //   socket.on("chess", (move) => {
@@ -29,8 +30,10 @@ app.use(cookieParser());
 
 app.use("/api/v1/users", userRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+//for dev purposes only
+app.get("/deleteAllUsers", (req, res) => {
+  alluserDelete();
+  res.send("All users deleted");
 });
 
 app.use(errorHandler);

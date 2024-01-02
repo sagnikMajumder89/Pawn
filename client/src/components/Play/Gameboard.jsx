@@ -48,7 +48,7 @@ function Gameboard() {
 
             </div>
             <div className='flex flex-col items-center justify-center w-1/2 p-5'>
-                <Chessboard position={game.fen()} showPromotionDialog={false} onPieceDrop={onDrop} promotionDialogVariant='vertical' />
+                <Chessboard position={game.fen()} showPromotionDialog={false} autoPromoteToQueen={true} onPieceDrop={onDrop} promotionDialogVariant='vertical' />
             </div>
             <div className='flex flex-col items-center justify-center w-1/4'>
                 <div className='flex flex-col items-center justify-start'>
