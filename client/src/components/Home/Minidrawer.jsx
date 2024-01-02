@@ -116,11 +116,6 @@ const items1 = [
         link: '/tournaments'
     },
     {
-        text: 'Practice with Bots',
-        icon: <AndroidIcon sx={{ color: 'white' }} />,
-        link: '/playwb'
-    },
-    {
         text: 'Learn from the Masters',
         icon: <SchoolIcon sx={{ color: 'white' }} />,
         link: '/learn'
@@ -141,11 +136,6 @@ const items2 = [
         text: 'About Us',
         icon: <InfoIcon sx={{ color: 'white' }} />,
         link: '/about'
-    },
-    {
-        text: 'T & C',
-        icon: <GavelIcon sx={{ color: 'white' }} />,
-        link: '/terms'
     },
     {
         text: 'Privacy Policy',

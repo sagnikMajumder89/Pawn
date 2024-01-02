@@ -2,22 +2,15 @@ require("dotenv").config();
 require("./utils/dbConnect")();
 const express = require("express");
 const app = express();
-const http = require("http");
-const server = http.createServer(app);
 const cookieParser = require("cookie-parser");
-const { Server } = require("socket.io");
 const PORT = Number(process.env.PORT) || 8000;
 const userRoutes = require("./routes/UserRoutes");
 const { errorHandler } = require("./middleware/errorHandler");
-const io = new Server(server);
 const cors = require("cors");
 const alluserDelete = require("./utils/devUtils/alluserDelete");
-
-// io.on("connection", (socket) => {
-//   socket.on("chess", (move) => {
-//     io.emit("chess", move);
-//   });
-// });
+const http = require("http");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
 
 const corsOptions = {
   origin: `${process.env.CLIENT_URL}`,
@@ -27,6 +20,19 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+//Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: `${process.env.CLIENT_URL}`,
+    methods: ["GET", "POST"],
+  },
+});
+// io.on("connection", (socket) => {
+//   socket.on("chess", (move) => {
+//     io.emit("chess", move);
+//   });
+// });
 
 app.use("/api/v1/users", userRoutes);
 

@@ -9,23 +9,35 @@ import { Chess } from 'chess.js'
 function Gameboard() {
     const [game, setGame] = useState(new Chess());
     console.log(game)
-    const [promotion, setPromotion] = useState({ show: false, square: null });
+    const [promotion, setPromotion] = useState({ show: false, ssquare: null, tsquare: null });
     console.log(game)
     // const game = new Chess();
     // console.log(game)
-    function onDrop(sourceSquare, targetSquare) {
+
+    const handlePromotion = (piece) => {
+        onDrop(promotion.ssquare, promotion.tsquare, piece);
+
+    }
+
+    function onDrop(sourceSquare, targetSquare, promotionPiece = 'q') {
+        console.log('Callllllllled')
+        console.log(sourceSquare, targetSquare, promotionPiece)
         try {
             const piece = game.get(sourceSquare);
 
             // Check if it's a pawn reaching the last rank
-            if (piece?.type === 'p' && ((piece.color === 'w' && targetSquare[1] === '8') || (piece.color === 'b' && targetSquare[1] === '1'))) {
-                setPromotion({ show: true, square: targetSquare });
+            if (promotion.show) {
+                setPromotion({ show: false, ssquare: null, tsquare: null })
+            } else if (piece?.type === 'p' && ((piece.color === 'w' && targetSquare[1] === '8') || (piece.color === 'b' && targetSquare[1] === '1'))) {
+                setPromotion({ show: true, ssquare: sourceSquare, tsquare: targetSquare });
                 return false; // Prevent the move until promotion is selected
             }
+
+
             const move = game.move({
                 from: sourceSquare,
                 to: targetSquare,
-                promotion: "r" // Note: This example always promotes to a queen
+                promotion: promotionPiece
             });
 
             console.log(game.fen())
@@ -47,8 +59,34 @@ function Gameboard() {
                 <Username user={'User2'} />
 
             </div>
-            <div className='flex flex-col items-center justify-center w-1/2 p-5'>
-                <Chessboard position={game.fen()} showPromotionDialog={false} autoPromoteToQueen={true} onPieceDrop={onDrop} promotionDialogVariant='vertical' />
+            <div className='flex flex-col items-center justify-center w-1/2 p-5 relative'>
+
+                {promotion.show && (
+                    <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center' style={{ zIndex: 2 }}>
+                        <div className='grid grid-row-4 border-4 border-border'>
+                            <div onClick={() => handlePromotion('q')} className='bg-[#fef8e2] w-20'>
+                                <img src='/images/chess/qw.png' alt='Queen' />
+                            </div>
+                            <div onClick={() => handlePromotion('r')} className='bg-[#055205] w-20'>
+                                <img src='/images/chess/rw.png' alt='Rook' />
+                            </div>
+                            <div onClick={() => handlePromotion('b')} className='bg-[#fef8e2] w-20'>
+                                <img src='/images/chess/bw.png' alt='Bishop' />
+                            </div>
+                            <div onClick={() => handlePromotion('n')} className='bg-[#055205] w-20'>
+                                <img src='/images/chess/nw.png' alt='Knight' />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className={promotion.show ? 'w-full h-full opacity-40' : 'w-full h-full'}>
+                    <Chessboard
+                        position={game.fen()}
+                        customDarkSquareStyle={{ backgroundColor: '#055205' }}
+                        autoPromoteToQueen={true}
+                        onPieceDrop={onDrop}
+                    />
+                </div>
             </div>
             <div className='flex flex-col items-center justify-center w-1/4'>
                 <div className='flex flex-col items-center justify-start'>
