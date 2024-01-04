@@ -47,7 +47,7 @@ export default function App() {
                   <Play />
                 </AuthRoute>
               } />
-              <Route path="/play/:id" element={
+              <Route path="/play/:roomId" element={
                 <AuthRoute>
                   <Gameboard />
                 </AuthRoute>

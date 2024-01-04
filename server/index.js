@@ -5,11 +5,14 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const PORT = Number(process.env.PORT) || 8000;
 const userRoutes = require("./routes/UserRoutes");
+const gameRoutes = require("./routes/GameRoutes");
 const { errorHandler } = require("./middleware/errorHandler");
 const cors = require("cors");
 const alluserDelete = require("./utils/devUtils/alluserDelete");
 const http = require("http");
 const { Server } = require("socket.io");
+const ws = require("./websocket/ws");
+const { isAuthenticated } = require("./middleware/isAuthenticated");
 const server = http.createServer(app);
 
 const corsOptions = {
@@ -28,13 +31,11 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
-// io.on("connection", (socket) => {
-//   socket.on("chess", (move) => {
-//     io.emit("chess", move);
-//   });
-// });
+
+io.on("connection", ws);
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/game", gameRoutes);
 
 //for dev purposes only
 app.get("/deleteAllUsers", (req, res) => {
