@@ -10,6 +10,14 @@ const gameRoomSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  isOver: {
+    type: Boolean,
+    default: false,
+  },
+  winner: {
+    type: String,
+    default: "",
+  },
   spectators: {
     type: [
       {
@@ -21,7 +29,7 @@ const gameRoomSchema = new Schema({
   },
   currentFen: {
     type: String,
-    required: true,
+    default: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
   },
   duration: {
     type: Number,

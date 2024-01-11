@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Chessboard } from 'react-chessboard'
 import CountdownTimer from './Countdown'
@@ -6,31 +6,46 @@ import ChatBox from './Chatbox'
 import Username from './Username'
 import Sidebar from './Sidebar'
 import { Chess } from 'chess.js'
-import io from 'socket.io-client'
 import CustomizedSnackbars from '../Snackbar/Snackbar'
 import ResultDialog from './ResultDialog'
-const socket = io.connect(process.env.REACT_APP_SERVER_URL);
+import { useSocket } from '../../providers/socketContext'
+import { GameDataContext } from '../../providers/gameDataProvider'
+import { UserDetailsContext } from '../Authentication/AuthRoute'
 
-function Gameboard({ userDetails }) {
-
-    const { roomId } = useParams()
-    const [game, setGame] = useState(new Chess())
-    const [color, setColor] = useState('w')
-    const [error, setError] = useState({ show: false, message: '', type: '' })
-    const [gameOver, setGameOver] = useState(false)
+function Gameboard() {
+    const socket = useSocket();
+    const { roomId } = useParams();
+    const { gameData } = useContext(GameDataContext);
+    const { userDetails } = useContext(UserDetailsContext);
+    const [game, setGame] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); // new state for loading
+    const [error, setError] = useState({ show: false, message: '', type: '' });
+    const [gameOver, setGameOver] = useState(false);
     const [promotion, setPromotion] = useState({ show: false, ssquare: null, tsquare: null });
+
     const navigate = useNavigate();
+
+    // useEffect to update game state when gameData changes
+    useEffect(() => {
+        if (gameData) {
+
+            setGame(new Chess(gameData.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+            setIsLoading(false); // Set loading to false as gameData is available
+            if (gameData.over) setGameOver(true)
+        }
+    }, [gameData]);
+
+    //onDrop function
     const onDrop = (sourceSquare, targetSquare, p, promotionPiece = 'q') => {
         try {
             const piece = game.get(sourceSquare);
             //see who's turn it is
-            if (game.turn() !== color) {
+            if (game.turn() !== gameData.color[0]) {
                 setError({ show: true, message: 'Not your turn', type: 'error' })
                 return false
             }
 
             //handle promotion
-            console.log(piece, sourceSquare, targetSquare)
             if (promotion.show) {
                 setPromotion({ show: false, ssquare: null, tsquare: null })
             } else if (piece?.type === 'p' && ((piece.color === 'w' && targetSquare[1] === '8') || (piece.color === 'b' && targetSquare[1] === '1'))) {
@@ -59,10 +74,13 @@ function Gameboard({ userDetails }) {
 
     }
 
+    //Promotion handler
     const handlePromotion = (piece) => {
         onDrop(promotion.ssquare, promotion.tsquare, 'p', piece);
     }
 
+
+    //Handle opponent move
     const handleOpponentMove = (move) => {
         const newGame = new Chess(move)
         setGame(newGame)
@@ -76,16 +94,15 @@ function Gameboard({ userDetails }) {
         socket.on('move', (data) => {
             handleOpponentMove(data)
         })
-    }, [])
+    }, [socket])
 
+
+    //join room
     useEffect(() => {
-        socket.on('join-room', (data) => {
-            if (data.userId != userDetails._id) return;
-            setColor(data.color)
-        })
-        socket.emit('join-room', { roomId, userId: userDetails._id })
-    }, [])
+        socket.emit('joinRoom', { roomId })
+    }, [socket, roomId])
 
+    if (isLoading) return <div>Loading...</div>
     return (
         <>
             <div className='flex flex-row items-center justify-center bg-background w-full h-full'>
@@ -93,8 +110,14 @@ function Gameboard({ userDetails }) {
                     <Sidebar />
                 </div>
                 <div className='flex flex-col items-end justify-between h-full w-fit py-16'>
-                    <Username user={'User1'} />
-                    <Username user={'User2'} />
+                    <Username username={gameData.opponent.username}
+                        rating={gameData.opponent.rating}
+                        profilePic={gameData.opponent.profilePicture}
+                    />
+                    <Username username={userDetails.username}
+                        rating={userDetails.rating}
+                        profilePic={userDetails.profilePicture}
+                    />
 
                 </div>
                 <div className='flex flex-col items-center justify-center w-1/2 p-5 relative'>
@@ -119,9 +142,9 @@ function Gameboard({ userDetails }) {
                     )}
                     <div className={promotion.show ? 'w-full h-full opacity-40' : 'w-full h-full'}>
                         <Chessboard
-                            boardOrientation={color === 'w' ? 'white' : 'black'}
+                            boardOrientation={gameData.color}
                             position={game.fen()}
-                            // customDarkSquareStyle={{ backgroundColor: '#080222' }}
+                            customDarkSquareStyle={{ backgroundColor: '#08825e' }}
                             autoPromoteToQueen={true}
                             onPieceDrop={onDrop}
                         />

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-function AuthRoute({ children }) {
+export const UserDetailsContext = createContext(null);
+
+export const AuthRoute = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [userDetails, setUserDetails] = useState({})
     const navigate = useNavigate();
@@ -28,11 +30,7 @@ function AuthRoute({ children }) {
             </div>
         )
 
-    return React.Children.map(children, child => {
-        return React.cloneElement(child, {
-            userDetails
-        });
-    });
+    return <UserDetailsContext.Provider value={{ userDetails }}>
+        {children}
+    </UserDetailsContext.Provider>
 }
-
-export default AuthRoute

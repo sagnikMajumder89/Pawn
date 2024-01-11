@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoTrophyOutline } from "react-icons/io5";
 import Lottie from "lottie-react";
 import loader from '../../utils/bar-loader.json'
+import { useSocket } from '../../providers/socketContext';
 
-function FIndingGame({ toggle }) {
+function FIndingGame({ toggle, userDetails }) {
+    console.log(userDetails)
+    const socket = useSocket()
+
+    useEffect(() => {
+        socket.emit("findGame", { userId: userDetails._id, socketId: socket.id })
+    })
     return (
         <div className='flex flex-col w-full h-full items-center justify-center p-5 gap-2'>
             <span className='font-semibold text-2xl'>
@@ -11,7 +18,7 @@ function FIndingGame({ toggle }) {
             </span >
             <span className='font-light mt-2 text-xl'>
                 <div className='flex flex-row gap-2 items-center justify-center'>
-                    Your rating: <IoTrophyOutline /> 1200
+                    Your rating: <IoTrophyOutline /> {userDetails.rating}
                 </div>
             </span>
             <div className='w-1/3'>

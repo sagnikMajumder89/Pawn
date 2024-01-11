@@ -12,7 +12,7 @@ const alluserDelete = require("./utils/devUtils/alluserDelete");
 const http = require("http");
 const { Server } = require("socket.io");
 const ws = require("./websocket/ws");
-const { isAuthenticated } = require("./middleware/isAuthenticated");
+const allGamesDelete = require("./utils/devUtils/allGamesDelete");
 const server = http.createServer(app);
 
 const corsOptions = {
@@ -32,15 +32,19 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", ws);
+io.on("connection", (socket) => ws(io, socket));
 
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/game", gameRoutes);
+app.use("/api/v1/games", gameRoutes);
 
 //for dev purposes only
 app.get("/deleteAllUsers", (req, res) => {
   alluserDelete();
   res.send("All users deleted");
+});
+app.get("/deleteAllGames", (req, res) => {
+  allGamesDelete();
+  res.send("All games deleted");
 });
 
 app.use(errorHandler);
