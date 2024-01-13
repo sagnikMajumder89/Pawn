@@ -17,7 +17,7 @@ export const GameDataProvider = ({ children }) => {
       setGameData(data);
       navigate(`/play/${data.roomId}`)
     })
-    socket.emit("getGameData", { roomId, socketId: socket.id, userId: userDetails._id })
+    socket.emit("getGameData", { roomId, socketId: socket.id, userId: userDetails._id, date: new Date() })
   }, [socket, roomId, userDetails._id, navigate]);
 
   return (

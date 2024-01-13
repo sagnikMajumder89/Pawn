@@ -28,7 +28,6 @@ function Gameboard() {
     // useEffect to update game state when gameData changes
     useEffect(() => {
         if (gameData) {
-
             setGame(new Chess(gameData.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
             setIsLoading(false); // Set loading to false as gameData is available
             if (gameData.over) setGameOver(true)
@@ -62,7 +61,7 @@ function Gameboard() {
 
             // illegal move
             if (move === null) return false;
-            socket.emit('move', { roomId, userId: userDetails._id, move: game.fen() })
+            socket.emit('move', { roomId, userId: userDetails._id, move: game.fen(), color: gameData.color, date: new Date() })
             setGame(new Chess(game.fen()))
             if (game.isGameOver()) {
                 setGameOver(true)
@@ -81,7 +80,7 @@ function Gameboard() {
 
 
     //Handle opponent move
-    const handleOpponentMove = (move) => {
+    const handleOpponentMove = ({ move, time }) => {
         const newGame = new Chess(move)
         setGame(newGame)
         if (newGame.isCheckmate()) {
@@ -150,12 +149,12 @@ function Gameboard() {
                         />
                     </div>
                 </div>
-                <div className='flex flex-col items-center justify-center w-1/4'>
-                    <div className='flex flex-col items-center justify-start'>
-                        <span className='text-copy text-lg font-semibold'>
-                            Timer
-                        </span>
-                        <CountdownTimer initialCount={600} />
+                <div className='flex flex-col justify-between w-1/4 h-full py-20'>
+                    <div className='flex flex-col items-start justify-start'>
+                        <CountdownTimer
+                            initialCount={gameData.color !== 'white' ? gameData.timew : gameData.timeb}
+                            pause={game.turn() !== gameData.color[0]}
+                        />
                     </div>
                     <div className='flex flex-row items-center justify-evenly w-full gap-2'>
                         <button type='submit' className='bg-primary-light rounded-sm w-2/6 px-3 py-3 mt-6 font-semibold text-copy text-md'>
@@ -171,6 +170,11 @@ function Gameboard() {
                     </div>
                     <div className='flex m-3 p-2'>
                         <ChatBox />
+                    </div>
+                    <div className='flex flex-col items-start justify-start'>
+                        <CountdownTimer
+                            initialCount={gameData.color === 'white' ? gameData.timew : gameData.timeb}
+                            pause={game.turn() === gameData.color[0]} />
                     </div>
                 </div>
             </div>

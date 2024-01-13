@@ -7,7 +7,6 @@ import FIndingGame from './FIndingGame'
 import SelectFriend from './SelectFriend'
 import { UserDetailsContext } from '../Authentication/AuthRoute'
 
-
 const initialValues = {
     hours: 0,
     minutes: 3,
@@ -41,7 +40,26 @@ function Play() {
             </div>
             <div className='flex flex-col w-1/2 items-center justify-center'>
                 <div className='flex flex-col bg-foreground w-4/5 h-4/5 rounded-lg items-center p-5'>
-                    {searchingGame ? ((playVS === 'Friend' && !opponentId) ? <SelectFriend setOpponentId={setOpponentId} /> : <FIndingGame userDetails={userDetails} toggle={handleCancelClick} />) : <TimeControls values={values} handleBlur={handleBlur} handleChange={handleChange} handleSubmit={handleSubmit} errors={errors} item={playVS} setItem={setplayVS} />}
+
+                    {searchingGame ? ((playVS === 'Friend' && !opponentId) ?
+                        <SelectFriend
+                            setOpponentId={setOpponentId}
+                        /> :
+                        <FIndingGame
+                            userDetails={userDetails}
+                            values={values}
+                            toggle={handleCancelClick}
+                        />) :
+                        <TimeControls
+                            values={values}
+                            handleBlur={handleBlur}
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+                            errors={errors}
+                            item={playVS}
+                            setItem={setplayVS}
+                        />}
+
                 </div>
             </div>
         </div>

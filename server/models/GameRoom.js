@@ -47,6 +47,22 @@ const gameRoomSchema = new Schema({
     type: Date,
     required: true,
   },
+  LastMoveTimew: {
+    type: Date,
+    default: null,
+  },
+  remTimew: {
+    type: Number,
+    default: 0,
+  },
+  remTimeb: {
+    type: Number,
+    default: 0,
+  },
+  LastMoveTimeb: {
+    type: Date,
+    default: null,
+  },
   pgn: {
     type: String,
     default: "",

@@ -4,12 +4,12 @@ import Lottie from "lottie-react";
 import loader from '../../utils/bar-loader.json'
 import { useSocket } from '../../providers/socketContext';
 
-function FIndingGame({ toggle, userDetails }) {
-    console.log(userDetails)
+function FIndingGame({ toggle, userDetails, values }) {
+
     const socket = useSocket()
 
     useEffect(() => {
-        socket.emit("findGame", { userId: userDetails._id, socketId: socket.id })
+        socket.emit("findGame", { userId: userDetails._id, socketId: socket.id, time: values })
     })
     return (
         <div className='flex flex-col w-full h-full items-center justify-center p-5 gap-2'>
