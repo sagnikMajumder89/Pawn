@@ -16,8 +16,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Typography } from '@mui/material';
-import SpeedIcon from '@mui/icons-material/Speed';
-import PeopleIcon from '@mui/icons-material/People';
 import TournamentIcon from '@mui/icons-material/EmojiEvents';
 import AndroidIcon from '@mui/icons-material/Android';
 import SchoolIcon from '@mui/icons-material/School';
@@ -27,9 +25,12 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import InfoIcon from '@mui/icons-material/Info';
 import GavelIcon from '@mui/icons-material/Gavel';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import BugReportIcon from '@mui/icons-material/BugReport';
 import FeedbackIcon from '@mui/icons-material/Feedback';
+import ProfileMenu from './ProfileMenu';
+import MessagesMenu from './MessagesMenu';
+import FriendsDialog from './FriendsDialogBox';
+import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 250;
 
@@ -100,62 +101,51 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const items1 = [
     {
-        text: 'Play Classic',
+        text: 'Home',
+        icon: <HomeIcon sx={{ color: 'white' }} />,
+        link: '/home'
+    },
+    {
+        text: 'Play',
         icon: <TimerIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Play Blitz',
-        icon: <SpeedIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Play with Friends',
-        icon: <PeopleIcon sx={{ color: 'white' }} />,
+        link: '/play'
     },
     {
         text: 'Tournaments',
         icon: <TournamentIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Practice with Bots',
-        icon: <AndroidIcon sx={{ color: 'white' }} />,
+        link: '/tournaments'
     },
     {
         text: 'Learn from the Masters',
         icon: <SchoolIcon sx={{ color: 'white' }} />,
+        link: '/learn'
     },
     {
         text: 'Watch Live Games',
         icon: <VisibilityIcon sx={{ color: 'white' }} />,
+        link: '/watch'
     }
 ];
 const items2 = [
     {
         text: 'Contact Us',
         icon: <ContactMailIcon sx={{ color: 'white' }} />,
+        link: '/contact'
     },
     {
         text: 'About Us',
         icon: <InfoIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Terms and Conditions',
-        icon: <GavelIcon sx={{ color: 'white' }} />,
+        link: '/about'
     },
     {
         text: 'Privacy Policy',
         icon: <PrivacyTipIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'FAQs',
-        icon: <HelpOutlineIcon sx={{ color: 'white' }} />,
-    },
-    {
-        text: 'Report a Bug',
-        icon: <BugReportIcon sx={{ color: 'white' }} />,
+        link: '/privacy'
     },
     {
         text: 'Feedback',
         icon: <FeedbackIcon sx={{ color: 'white' }} />,
+        link: '/feedback'
     }
 ];
 
@@ -163,6 +153,7 @@ const items2 = [
 //widget
 export default function MiniDrawer() {
     const theme = useTheme();
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -176,7 +167,7 @@ export default function MiniDrawer() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} elevation={0}>
+            <AppBar position="fixed" open={open} elevation={2}>
                 <Toolbar className='bg-background'>
                     <IconButton
                         aria-label="open drawer"
@@ -189,7 +180,14 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon sx={{ color: 'white' }} />
                     </IconButton>
-                    <div className="text-2xl font-bold text-copy">PawnHub.com</div>
+                    <div className='flex w-full h-full justify-between items-center'>
+                        <div className="text-2xl font-bold text-copy">PawnHub.com</div>
+                        <div className='flex flex-row'>
+                            <FriendsDialog />
+                            <MessagesMenu />
+                            <ProfileMenu />
+                        </div>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open} sx={{ backgroundColor: "#202d29" }} >
@@ -198,13 +196,12 @@ export default function MiniDrawer() {
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
                 </DrawerHeader>
-
-
                 <Divider />
                 <List >
                     {items1.map((item, index) => (
                         <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
+                                onClick={() => navigate(item.link)}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
@@ -234,6 +231,7 @@ export default function MiniDrawer() {
                     {items2.map((item, index) => (
                         <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
+                                onClick={() => navigate(item.link)}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',

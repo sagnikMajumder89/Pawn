@@ -10,7 +10,7 @@ function Navbar() {
     }
     return (
         <div className='fixed top-0 w-full'>
-            <div className='flex bg-background text-copy items-center justify-between'>
+            <div className='flex text-copy items-center justify-between'>
                 <div className='flex flex-row items-center'>
                     <div className="w-16 h-16">
                         <img src="images/logo.png" alt="Logo" />

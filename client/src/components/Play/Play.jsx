@@ -2,10 +2,10 @@ import { useFormik } from 'formik'
 import MiniDrawer from '../Home/Minidrawer'
 import { Chessboard } from 'react-chessboard'
 import TimeControls from './TimeControls'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import FIndingGame from './FIndingGame'
 import SelectFriend from './SelectFriend'
-
+import { UserDetailsContext } from '../Authentication/AuthRoute'
 
 const initialValues = {
     hours: 0,
@@ -14,6 +14,7 @@ const initialValues = {
     increment: 2
 }
 function Play() {
+    const { userDetails } = useContext(UserDetailsContext);
     const [searchingGame, setSearchingGame] = useState(false)
     const [playVS, setplayVS] = useState('Random');
     const [opponentId, setOpponentId] = useState(null);
@@ -39,7 +40,26 @@ function Play() {
             </div>
             <div className='flex flex-col w-1/2 items-center justify-center'>
                 <div className='flex flex-col bg-foreground w-4/5 h-4/5 rounded-lg items-center p-5'>
-                    {searchingGame ? ((playVS === 'Friend' && !opponentId) ? <SelectFriend setOpponentId={setOpponentId} /> : <FIndingGame toggle={handleCancelClick} />) : <TimeControls values={values} handleBlur={handleBlur} handleChange={handleChange} handleSubmit={handleSubmit} errors={errors} item={playVS} setItem={setplayVS} />}
+
+                    {searchingGame ? ((playVS === 'Friend' && !opponentId) ?
+                        <SelectFriend
+                            setOpponentId={setOpponentId}
+                        /> :
+                        <FIndingGame
+                            userDetails={userDetails}
+                            values={values}
+                            toggle={handleCancelClick}
+                        />) :
+                        <TimeControls
+                            values={values}
+                            handleBlur={handleBlur}
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+                            errors={errors}
+                            item={playVS}
+                            setItem={setplayVS}
+                        />}
+
                 </div>
             </div>
         </div>

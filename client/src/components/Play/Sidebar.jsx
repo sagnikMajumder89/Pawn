@@ -15,20 +15,51 @@ import InfoIcon from '@mui/icons-material/Info';
 import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useNavigate } from "react-router-dom";
 
 
 const items = [
-    { text: "Home", icon: <HomeIcon /> },
-    { text: "Watch", icon: <VisibilityIcon /> },
-    { text: "Leaderboard", icon: <LeaderboardIcon /> },
-    { text: "About", icon: <InfoIcon /> },
-    { text: "Contact Us", icon: <ChatIcon /> },
-    { text: "Settings", icon: <SettingsIcon /> },
+    {
+        text: "Home",
+        icon: <HomeIcon />,
+        link: "/home"
+    },
+
+    {
+        text: "Watch",
+        icon: <VisibilityIcon />,
+        link: "/watch"
+    },
+
+    {
+        text: "Leaderboard",
+        icon: <LeaderboardIcon />,
+        link: "/leaderboard"
+    },
+
+    {
+        text: "About",
+        icon: <InfoIcon />,
+        link: "/about"
+    },
+
+    {
+        text: "Contact Us",
+        icon: <ChatIcon />,
+        link: "/contact"
+    },
+
+    {
+        text: "Settings",
+        icon: <SettingsIcon />,
+        link: "/settings"
+    },
+
 ];
 
 export default function Sidebar() {
     const [state, setState] = React.useState({ left: false });
-
+    const navigate = useNavigate();
     const toggleDrawer = (open) => (event) => {
         if (
             event &&
@@ -50,7 +81,7 @@ export default function Sidebar() {
             <List>
                 {items.map((item, index) => (
                     <ListItem key={index} disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => navigate(item.link)}>
                             <ListItemIcon>
                                 {item.icon}
                             </ListItemIcon>
