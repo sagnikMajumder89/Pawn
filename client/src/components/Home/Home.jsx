@@ -41,7 +41,6 @@ function Home() {
     const handleClick = (link) => {
         navigator(link);
     }
-    const userGames = [];
     return (
         <div className='bg-background w-full h-full flex flex-row'>
             <MiniDrawer />
@@ -57,10 +56,34 @@ function Home() {
                         )
                     })}
                 </div>
-                <div className="flex flex-col gap-2 mt-4">
+                <div className="flex flex-col gap-2 mt-4 w-full">
                     <span className="text-3xl font-semibold">Game History</span>
-                    {userGames.length === 0 ? <span className="text-md font-light">No games played yet</span> :
-                        <span className="text-xl font-light">Games played</span>
+                    {userDetails.gameHistory.length === 0 ? <span className="text-md font-light">No games played yet</span> :
+                        <div className="flex flex-col gap-2 w-full">
+                            {userDetails.gameHistory.map((game) => {
+                                return (
+                                    <div key={game._id} className="flex flex-col gap-2 bg-foreground w-full p-2 border-border border-2">
+                                        <span className="text-sm text-gray-400 px-5">Game id: {game._id}</span>
+                                        <div className="flex flex-row gap-4 font-semibold items-center justify-start px-5 pb-3 w-full ">
+                                            <span>
+                                                White: {game.white.username}
+                                            </span>
+                                            <span>
+                                                {game.white.rating}
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-row gap-4 font-semibold items-center justify-start px-5 pb-3 w-full">
+                                            <span>
+                                                Black: {game.black.username}
+                                            </span>
+                                            <span>
+                                                {game.white.rating}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     }
                 </div>
             </div>

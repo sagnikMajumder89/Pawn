@@ -30,14 +30,18 @@ const matchMaking = async (io, queue, data) => {
           black: data.userId,
           spectators: [],
           duration: data.time.duration,
+          LastMoveTimeb: new Date(),
+          LastMoveTimew: new Date(),
           increment: data.time.increment,
           whiteStartTime: new Date(),
           blackStartTime: new Date(),
-          remTimew: data.time.duration, //change to user input
+          remTimew: data.time.duration,
           remTimeb: data.time.duration,
           pgn: "",
         });
         await newGameRoom.save();
+        user.gameHistory.push(newGameRoom._id);
+        user2.gameHistory.push(newGameRoom._id);
 
         //send gameDetails to both users
         io.to(queue[i].socketId).emit("gameFound", {
@@ -45,7 +49,9 @@ const matchMaking = async (io, queue, data) => {
           roomId: newGameRoom._id,
           color: "white",
           over: false,
-          time: newGameRoom.remTimew,
+          timew: newGameRoom.remTimew,
+          timeb: newGameRoom.remTimeb,
+          serverTime: new Date().getTime(),
           opponent: {
             username: user.username,
             rating: user.rating,
@@ -57,7 +63,9 @@ const matchMaking = async (io, queue, data) => {
           fen: newGameRoom.currentFen,
           roomId: newGameRoom._id,
           color: "black",
-          time: newGameRoom.remTimeb,
+          timew: newGameRoom.remTimew,
+          timeb: newGameRoom.remTimeb,
+          serverTime: new Date().getTime(),
           over: false,
           opponent: {
             username: user2.username,
@@ -65,9 +73,10 @@ const matchMaking = async (io, queue, data) => {
             profilePicture: user2.profilePicture,
           },
         });
-        console.log("Match between: ", user.username, user2.username);
         isMatched = true;
         queue.splice(i, 1);
+        await user.save();
+        await user2.save();
         break;
       }
     }

@@ -32,7 +32,7 @@ const userSchema = new Schema({
     type: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Game",
+        ref: "GameRoom",
       },
     ],
     default: [],

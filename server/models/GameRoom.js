@@ -49,7 +49,7 @@ const gameRoomSchema = new Schema({
   },
   LastMoveTimew: {
     type: Date,
-    default: null,
+    default: new Date(),
   },
   remTimew: {
     type: Number,

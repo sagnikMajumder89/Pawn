@@ -18,6 +18,7 @@ function Gameboard() {
     const { gameData } = useContext(GameDataContext);
     const { userDetails } = useContext(UserDetailsContext);
     const [game, setGame] = useState(null);
+    const [time, setTime] = useState({ w: 0, b: 0, pw: true, pb: true })
     const [isLoading, setIsLoading] = useState(true); // new state for loading
     const [error, setError] = useState({ show: false, message: '', type: '' });
     const [gameOver, setGameOver] = useState(false);
@@ -28,8 +29,17 @@ function Gameboard() {
     // useEffect to update game state when gameData changes
     useEffect(() => {
         if (gameData) {
-            setGame(new Chess(gameData.fen || "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
-            setIsLoading(false); // Set loading to false as gameData is available
+            //network delay
+            const newGame = new Chess(gameData.fen);
+            const timeDifference = (new Date().getTime() - gameData.serverTime) / 1000;
+            setGame(newGame);
+            if (newGame.turn === 'w') {
+                setTime({ w: gameData.timew - timeDifference, b: gameData.timeb, pw: gameData.firstMovew, pb: gameData.firstMoveb })
+            }
+            else {
+                setTime({ w: gameData.timew, b: gameData.timeb - timeDifference, pw: gameData.firstMovew, pb: gameData.firstMoveb })
+            }
+            setIsLoading(false);
             if (gameData.over) setGameOver(true)
         }
     }, [gameData]);
@@ -61,7 +71,7 @@ function Gameboard() {
 
             // illegal move
             if (move === null) return false;
-            socket.emit('move', { roomId, userId: userDetails._id, move: game.fen(), color: gameData.color, date: new Date() })
+            socket.emit('move', { roomId, userId: userDetails._id, move: game.fen(), color: gameData.color })
             setGame(new Chess(game.fen()))
             if (game.isGameOver()) {
                 setGameOver(true)
@@ -80,8 +90,16 @@ function Gameboard() {
 
 
     //Handle opponent move
-    const handleOpponentMove = ({ move, time }) => {
+    const handleOpponentMove = ({ move, timew, timeb, serverTime, firstMovew, firstMoveb }) => {
         const newGame = new Chess(move)
+        const timeDifference = (new Date().getTime() - serverTime) / 1000;
+        if (newGame.turn() === 'w') {
+            setTime({ w: timew - timeDifference, b: timeb })
+        }
+        else {
+            setTime({ w: timew, b: timeb - timeDifference })
+        }
+
         setGame(newGame)
         if (newGame.isCheckmate()) {
             setGameOver(true)
@@ -120,7 +138,6 @@ function Gameboard() {
 
                 </div>
                 <div className='flex flex-col items-center justify-center w-1/2 p-5 relative'>
-
                     {promotion.show && (
                         <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center' style={{ zIndex: 2 }}>
                             <div className='grid grid-row-4 border-4 border-border'>
@@ -152,8 +169,8 @@ function Gameboard() {
                 <div className='flex flex-col justify-between w-1/4 h-full py-20'>
                     <div className='flex flex-col items-start justify-start'>
                         <CountdownTimer
-                            initialCount={gameData.color !== 'white' ? gameData.timew : gameData.timeb}
-                            pause={game.turn() !== gameData.color[0]}
+                            initialCount={gameData.color !== 'white' ? time.w : time.b}
+                            pause={game.turn() === gameData.color[0]}
                         />
                     </div>
                     <div className='flex flex-row items-center justify-evenly w-full gap-2'>
@@ -173,8 +190,8 @@ function Gameboard() {
                     </div>
                     <div className='flex flex-col items-start justify-start'>
                         <CountdownTimer
-                            initialCount={gameData.color === 'white' ? gameData.timew : gameData.timeb}
-                            pause={game.turn() === gameData.color[0]} />
+                            initialCount={gameData.color === 'white' ? time.w : time.b}
+                            pause={game.turn() !== gameData.color[0]} />
                     </div>
                 </div>
             </div>

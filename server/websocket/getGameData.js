@@ -1,7 +1,6 @@
 const GameRoom = require("../models/GameRoom");
 const { Chess } = require("chess.js");
 const getGameData = async (io, socket, data) => {
-  console.log(data);
   try {
     const { userId, roomId, socketId } = data;
     const gameRoom = await GameRoom.findById(roomId)
@@ -26,17 +25,20 @@ const getGameData = async (io, socket, data) => {
         profilePicture: gameRoom.white.profilePicture,
       };
     }
-    timew =
-      currPosi.turn() !== "w"
-        ? gameRoom.remTimew
-        : gameRoom.remTimew -
-          (new Date(data.date) - gameRoom.LastMoveTimew) / 1000;
+
+    timew = !gameRoom.LastMoveTimew
+      ? gameRoom.remTimew
+      : currPosi.turn() !== "w"
+      ? gameRoom.remTimew
+      : gameRoom.remTimew -
+        (new Date(data.date) - gameRoom.LastMoveTimew) / 1000;
     if (timew < 0) timew = 0;
-    timeb =
-      currPosi.turn() !== "b"
-        ? gameRoom.remTimeb
-        : gameRoom.remTimeb -
-          (new Date(data.date) - gameRoom.LastMoveTimeb) / 1000;
+    timeb = !gameRoom.LastMoveTimeb
+      ? gameRoom.remTimeb
+      : currPosi.turn() !== "b"
+      ? gameRoom.remTimeb
+      : gameRoom.remTimeb -
+        (new Date(data.date) - gameRoom.LastMoveTimeb) / 1000;
     if (timeb < 0) timeb = 0;
     io.to(socketId).emit("gameFound", {
       fen: gameRoom.currentFen,
@@ -46,6 +48,7 @@ const getGameData = async (io, socket, data) => {
       opponent,
       timew,
       timeb,
+      serverTime: new Date().getTime(),
     });
   } catch (error) {
     console.log(error);

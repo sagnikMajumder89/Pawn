@@ -16,7 +16,7 @@ const CountdownTimer = ({ initialCount, pause }) => {
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const secs = Math.floor(totalSeconds % 60);
-        return `${hours > 0 ? `${hours}:` : ''}${minutes}:${secs.toString().padStart(2, '0')}`;
+        return `${hours > 0 ? `${hours}:` : ''}${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
     return (

@@ -131,7 +131,16 @@ const checkAuth = asyncHandler(async (req, res) => {
     if (!verified) {
       return res.status(200).json({ status: false });
     }
-    res.status(200).json({ status: true, user: req.user });
+    const user = await User.findById(req.user._id)
+      .select("-password")
+      .populate({
+        path: "gameHistory",
+        populate: [
+          { path: "white", model: "User" },
+          { path: "black", model: "User" },
+        ],
+      });
+    res.status(200).json({ status: true, user });
   } catch (error) {
     console.log(error);
     throw new Error(error);
