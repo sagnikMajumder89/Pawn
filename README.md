@@ -28,7 +28,7 @@ Just follow these simple steps to get started with pawn.com.
 
 ## For Developers
 
-    There are two folders in this repository: `client` and `server`. The `client` folder contains the frontend code, while the `server` folder contains the backend code. The `client` folder is a React app, while the `server` folder is a Node.js app.
+There are two folders in this repository: `client` and `server`. The `client` folder contains the frontend code, while the `server` folder contains the backend code. The `client` folder is a React app, while the `server` folder is a Node.js app.
 
 1. Clone the repository
 2. `cd client` to go to the client folder and `npm i` to install all dependencies
