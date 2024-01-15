@@ -12,39 +12,49 @@ Welcome to the official repository for pawn.com, an online platform dedicated to
 
 ## Getting Started
 
-Describe how users can get started with your website. Include steps for registration, gameplay, and accessing various features.
+Just follow these simple steps to get started with pawn.com.
+
+- Step 1: Go to [pawn.com](/)
+- Step 2: Sign up for an account
+- Step 3: Start playing!
 
 ## Technologies Used
 
-List the technologies, frameworks, and tools used in the development of pawn.com.
+- React (for frontend)
+- Node.js (for server)
+- Express (for server)
+- MongoDB (for database)
+- Socket.io (for real-time communication)
 
-- Technology 1
-- Technology 2
-- Technology 3
+## For Developers
+
+    There are two folders in this repository: `client` and `server`. The `client` folder contains the frontend code, while the `server` folder contains the backend code. The `client` folder is a React app, while the `server` folder is a Node.js app.
+
+1. Clone the repository
+2. `cd client` to go to the client folder and `npm i` to install all dependencies
+3. `cd server` to go to the server folder and `npm i` to install all dependencies
+4. `npm run start` to start the frontend server
+5. `npm run dev` to start the backend server
 
 ## Contributing
 
-Explain how others can contribute to the pawn.com project. Provide guidelines for submitting pull requests, reporting bugs, and suggesting enhancements.
+Contributing to the project is currently not allowed. However, if you would like to contribute, please contact the project owner. Contact details can be found below.
 
 ## Code of Conduct
 
-Outline the code of conduct for contributors and members of the community.
+N/A
 
 ## Feedback and Support
 
-Provide information on how users can offer feedback or get support. Include contact details or links to support channels.
+If you have any feedback or support inquiries, please contact the project owner.
 
 ## Authors and Acknowledgment
 
-Acknowledge the individuals and organizations that have contributed significantly to the project.
-
-## License
-
-Specify the license under which the project is released.
+Acknowledge the individuals and organizations that have contributed significantly to the project. Contact details can be found below.
 
 ## Project Status
 
-Provide current status of the project - active development, maintenance mode, etc.
+Under development.
 
 ---
 
