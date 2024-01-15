@@ -58,4 +58,4 @@ Under development.
 
 ---
 
-Contact detail: **Email: ** sagnikm183@gmail.com .For more information, visit [Official Website](/)
+Contact detail: **Email:** sagnikm183@gmail.com .For more information, visit [Official Website](/)
