@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:8000"; // server endpoint
+const ENDPOINT = process.env.REACT_APP_SERVER_URL; // server endpoint
 const SocketContext = createContext();
 
 export const useSocket = () => useContext(SocketContext);
