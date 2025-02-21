@@ -16,7 +16,7 @@ function Navbar() {
                         <img src="images/logo.png" alt="Logo" />
                     </div>
                     <div>
-                        <div className="text-2xl font-bold">PawnHub.com</div>
+                        <div className="text-2xl font-bold">Chess.play</div>
                     </div>
                 </div>
                 <div className='flex flex-row-reverse p-3 gap-4'>

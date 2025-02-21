@@ -9,7 +9,7 @@ function ContactUs() {
                 <span className="flex flex-col gap-3">
                     <p className="font-bold text-3xl"> Privacy Policy</p>
                     <p className="font-light text-md">Effective Date: 01 / 01 / 2024</p>
-                    <p> This Privacy Policy describes how PawnHub.com ("Website", "we", "us", or "our") collects, uses, and discloses your personal information when you visit or use our website.</p>
+                    <p> This Privacy Policy describes how Chess.play ("Website", "we", "us", or "our") collects, uses, and discloses your personal information when you visit or use our website.</p>
                     <p className="font-semibold text-xl"> 1. Information We Collect</p>
                     <p className="text-md"> We collect the following types of information from you:</p>
 

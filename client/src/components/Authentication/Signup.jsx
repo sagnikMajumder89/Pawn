@@ -44,13 +44,13 @@ function Signup() {
     async function handleSubmitClick(values) {
         setLoading(true)
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/users/signup', {
+            const response = await axios.post('https://pawnbackend.onrender.com/api/v1/users/signup', {
                 username: values.username,
                 email: values.email,
                 password: values.password
             });
             if (response.status === 201) {
-                const responeLogin = await axios.post('http://localhost:8000/api/v1/users/login', {
+                const responeLogin = await axios.post('https://pawnbackend.onrender.com/api/v1/users/login', {
                     username: values.username,
                     password: values.password
                 }, { withCredentials: true })

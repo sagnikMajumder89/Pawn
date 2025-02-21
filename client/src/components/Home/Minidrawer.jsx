@@ -181,7 +181,7 @@ export default function MiniDrawer() {
                         <MenuIcon sx={{ color: 'white' }} />
                     </IconButton>
                     <div className='flex w-full h-full justify-between items-center'>
-                        <div className="text-2xl font-bold text-copy">PawnHub.com</div>
+                        <div className="text-2xl font-bold text-copy">Chess.play</div>
                         <div className='flex flex-row'>
                             <FriendsDialog />
                             <MessagesMenu />
